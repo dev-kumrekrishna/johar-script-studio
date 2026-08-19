@@ -1,0 +1,1242 @@
+/* ==========================================================
+   JOHAR SCRIPT STUDIO - REFINED & OPTIMIZED CSS
+========================================================== */
+
+/* --- 1. FONTS --- */
+@font-face {
+    font-family: 'Masaram Gondi';
+    src: url('../fonts/MasaramGondi-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Gunjala Gondi';
+    src: url('../fonts/GunjalaGondi-Regular.ttf') format('truetype');
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- 2. CSS VARIABLES (DARK & LIGHT THEMES) --- */
+:root {
+    /* Dark Theme (Default) */
+    --bg: #0b0b0b;
+    --card: #151515;
+    --border: #2b2b2b;
+    --primary: #08fb8f;
+    --primary-dark: #12c86e;
+    --white: #ffffff;
+    --text: #d8d8d8;
+    --radius: 16px;
+    --transition: 0.3s ease;
+    
+    /* Keyboard & Buttons */
+    --key-bg: #2a2a32;
+    --key-border: #444444;
+    --key-shadow: #111111;
+    --key-text: #ffffff;
+    --key-small: var(--primary);
+    --action-bg: #33333c;
+    --input-bg: #202020;
+}
+
+body.light-theme {
+    /* Light Theme Overrides */
+    --bg: #f4f5f8;
+    --card: #ffffff;
+    --border: #e0e0e0;
+    --white: #111111; /* White variables act as dark text in light mode */
+    --text: #555555;
+    --primary: #05c46b;
+    --primary-dark: #049f55;
+
+    /* Keyboard & Buttons */
+    --key-bg: #ffffff;
+    --key-border: #d1d1d1;
+    --key-shadow: #b0b0b0;
+    --key-text: #111111;
+    --key-small: #049f55;
+    --action-bg: #f0f0f0;
+    --input-bg: #f4f5f8;
+}
+
+/* --- 3. BASE & RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--white);
+    transition: background var(--transition), color var(--transition);
+}
+
+img { max-width: 100%; display: block; }
+button { cursor: pointer; transition: var(--transition); }
+a { text-decoration: none; color: inherit; }
+
+.container {
+    width: 90%;
+    max-width: 1300px;
+    margin: auto;
+}
+
+/* --- 4. LOADER --- */
+.loader {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 9999;
+}
+.loader img { width: 90px; }
+.loader h2 { font-size: 1.7rem; color: #fff; }
+.loader span { color: #888; }
+
+/* --- 5. HEADER --- */
+header {
+    position: sticky;
+    top: 0;
+    background: rgba(var(--bg), 0.85);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+}
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+.logo { display: flex; align-items: center; gap: 15px; }
+.logo img { width: 55px; }
+.logo h2 { font-size: 1.4rem; }
+.logo p { color: #8f8f8f; font-size: 0.85rem; }
+
+#themeBtn {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: var(--card);
+    color: var(--primary);
+    font-size: 20px;
+    border: 1px solid var(--border);
+}
+#themeBtn:hover { box-shadow: 0 0 10px rgba(8, 251, 143, 0.2); }
+
+/* --- 6. HERO SECTION --- */
+#hero { padding: 80px 0 50px; text-align: center; }
+.hero-greeting {
+    font-size: 2.2rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+#heroGreeting {
+    white-space: nowrap;
+    letter-spacing: 0 !important;
+    word-spacing: 8px;
+    line-height: 1.4;
+}
+
+#hero h1 { font-size: 3rem; margin-bottom: 15px; }
+#hero p { max-width: 700px; margin: auto; color: var(--text); font-size: 1.05rem; }
+
+/* --- 7. TOOLBAR --- */
+#toolbar { padding-bottom: 40px; }
+#toolbar .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+.tool {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+}
+.tool label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 0.95rem; }
+.tool select, .direction button {
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--input-bg);
+    color: var(--white);
+    padding: 0 12px;
+    font-size: 1rem;
+    outline: none;
+}
+.direction { display: flex; gap: 10px; }
+.direction button { flex: 1; }
+.direction button.active {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.toolbar-buttons { display: flex; flex-direction: column; gap: 12px; }
+.toolbar-buttons button {
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #000;
+    font-weight: 600;
+    font-size: 1rem;
+}
+.toolbar-buttons button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(8, 251, 143, 0.3);
+}
+
+/* --- 8. WRITING PAD (EDITOR & VISUAL BOARD) --- */
+#editor { padding: 40px 0; }
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 15px;
+}
+.editor-header h2 { font-size: 1.8rem; }
+.editor-header span { color: var(--text); font-size: 0.95rem; }
+
+#editorBox {
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    padding: 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--white);
+    font-size: 22px;
+    line-height: 1.6;
+    outline: none;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+}
+#editorBox:focus { border-color: var(--primary); }
+
+.visual-board {
+    width: 100%;
+    min-height: 150px;
+    padding: 25px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: rgba(var(--card), 0.6);
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 8px;
+}
+.visual-board .placeholder-text { color: #888; font-size: 1rem; }
+
+/* Translated Character Boxes */
+.char-box {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 4px 15px 4px;
+}
+.char-gondi { font-size: 25px; color: var(--white); line-height: 1; }
+.char-trans {
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+}
+
+.translation-result {
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+.translation-word {
+    margin: 0;
+}
+
+/* =========================================================
+   JOHAR SCRIPT STUDIO
+   VIRTUAL KEYBOARD
+   keyboard.css
+   ========================================================= */
+
+
+/* =========================================================
+   KEYBOARD CONTAINER
+   ========================================================= */
+
+#keyboard {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 20px auto 0;
+    padding: 18px 12px 24px;
+
+    background: #151515;
+    border: 1px solid #292929;
+    border-radius: 22px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   KEYBOARD TITLE
+   ========================================================= */
+
+#keyboard h2,
+#keyboard h3 {
+    margin: 0 0 14px;
+}
+
+
+/* =========================================================
+   DYNAMIC KEYBOARD
+   ========================================================= */
+
+#dynamicKeyboard {
+
+    width: 100%;
+    max-width: 520px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    /* Compact keyboard */
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 7px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   INDIVIDUAL KEY
+   ========================================================= */
+
+#dynamicKeyboard .keyboard-key {
+
+    width: 100%;
+    min-width: 0;
+
+    height: 64px;
+
+    padding: 5px 3px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #3b3b45;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #303039,
+            #25252d
+        );
+
+    color: #fff;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 0 #17171b,
+        0 5px 9px rgba(0,0,0,.22);
+
+    transition:
+        transform .08s ease,
+        background .12s ease,
+        box-shadow .08s ease;
+}
+
+
+/* =========================================================
+   KEY PRESS
+   ========================================================= */
+
+#dynamicKeyboard .keyboard-key:active {
+
+    transform:
+        translateY(2px);
+
+    box-shadow:
+        0 1px 0 #111;
+
+    background:
+        #34343d;
+}
+
+
+/* =========================================================
+   GONDI CHARACTER
+   ========================================================= */
+
+#dynamicKeyboard .keyboard-gondi {
+
+    display: block;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    color: #f5f5f5;
+
+    margin-bottom: 5px;
+}
+
+
+/* =========================================================
+   ENGLISH + HINDI LABEL
+   ========================================================= */
+
+#dynamicKeyboard .keyboard-label {
+
+    display: block;
+
+    max-width: 100%;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 11px;
+
+    line-height: 1;
+
+    font-weight: 600;
+
+    color: #00f58b;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+#kb-backspace,
+#kb-space,
+#kb-enter {
+
+    height: 52px;
+
+    min-height: 52px;
+
+    border: 1px solid #3b3b45;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #303039,
+            #25252d
+        );
+
+    color: #fff;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 3px 0 #17171b;
+
+    transition:
+        transform .08s ease,
+        background .12s ease;
+}
+
+
+/* =========================================================
+   ACTION BUTTON PRESS
+   ========================================================= */
+
+#kb-backspace:active,
+#kb-space:active,
+#kb-enter:active {
+
+    transform:
+        translateY(2px);
+
+    box-shadow:
+        0 1px 0 #111;
+}
+
+
+/* =========================================================
+   ACTION BUTTON ROW
+   ========================================================= */
+
+#kb-backspace,
+#kb-space,
+#kb-enter {
+
+    margin-top: 10px;
+}
+
+
+/*
+   Agar ye teen buttons ek parent ke andar hain,
+   us parent ko keyboard-actions class dena best hai.
+*/
+
+.keyboard-actions {
+
+    width: 100%;
+    max-width: 520px;
+
+    margin: 10px auto 0;
+
+    display: grid;
+
+    grid-template-columns:
+        1.35fr
+        1fr
+        1fr;
+
+    gap: 7px;
+}
+
+
+/* =========================================================
+   BACKSPACE SPECIAL
+   ========================================================= */
+
+#kb-backspace {
+
+    color: #ff5b67;
+
+    border-color:
+        rgba(255, 70, 80, .35);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    #keyboard {
+
+        margin-top: 14px;
+
+        padding:
+            14px 8px 20px;
+
+        border-radius: 18px;
+
+    }
+
+
+    #dynamicKeyboard {
+
+        gap: 5px;
+
+        max-width: 100%;
+
+    }
+
+
+    #dynamicKeyboard .keyboard-key {
+
+        height: 58px;
+
+        border-radius: 10px;
+
+        padding: 4px 2px;
+
+    }
+
+
+    #dynamicKeyboard .keyboard-gondi {
+
+        font-size: 22px;
+
+        margin-bottom: 4px;
+
+    }
+
+
+    #dynamicKeyboard .keyboard-label {
+
+        font-size: 9px;
+
+    }
+
+
+    #kb-backspace,
+    #kb-space,
+    #kb-enter {
+
+        height: 48px;
+
+        min-height: 48px;
+
+        font-size: 12px;
+
+        border-radius: 10px;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    #keyboard {
+
+        padding-left: 6px;
+        padding-right: 6px;
+
+    }
+
+
+    #dynamicKeyboard {
+
+        gap: 4px;
+
+    }
+
+
+    #dynamicKeyboard .keyboard-key {
+
+        height: 54px;
+
+    }
+
+
+    #dynamicKeyboard .keyboard-gondi {
+
+        font-size: 20px;
+
+    }
+
+
+    #dynamicKeyboard .keyboard-label {
+
+        font-size: 8px;
+
+    }
+
+
+    #kb-backspace,
+    #kb-space,
+    #kb-enter {
+
+        font-size: 11px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   9. TYPING GUIDE
+   GUIDE CSS ONLY
+========================================================== */
+
+#characters {
+
+    padding: 50px 0;
+}
+
+
+/* =============================
+   Guide Filters
+============================= */
+
+#characters .guide-filters {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-bottom: 30px;
+}
+
+
+#characters .guide-btn {
+
+    background:
+        var(--input-bg);
+
+    border:
+        1px solid var(--border);
+
+    color:
+        var(--text);
+
+    padding:
+        10px 25px;
+
+    border-radius:
+        30px;
+
+    font-size:
+        14px;
+
+    font-weight:
+        500;
+}
+
+
+#characters .guide-btn:hover {
+
+    background:
+        var(--border);
+
+    color:
+        var(--white);
+}
+
+
+#characters .guide-btn.active {
+
+    background:
+        var(--primary);
+
+    color:
+        #000;
+
+    font-weight:
+        600;
+
+    border-color:
+        var(--primary-dark);
+
+    box-shadow:
+        0 0 15px
+        rgba(8, 251, 143, 0.3);
+}
+
+
+/* =============================
+   Guide Table
+============================= */
+
+#guideTables {
+
+    width: 100%;
+}
+
+
+#guideTables .guide-table-container {
+
+    display: none;
+
+    animation:
+        guideFadeIn
+        0.3s ease;
+}
+
+
+#guideTables
+.guide-table-container.active {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-bottom: 12px;
+}
+
+
+/* =============================
+   Guide Key
+============================= */
+
+#guideTables .key {
+
+    width: 65px;
+
+    height: 70px;
+
+    background:
+        var(--key-bg);
+
+    border:
+        1px solid var(--key-border);
+
+    border-bottom:
+        3px solid var(--key-shadow);
+
+    border-radius:
+        8px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    cursor:
+        default;
+
+    user-select:
+        none;
+
+    transition:
+        transform 0.08s,
+        background 0.08s;
+}
+
+
+/* =============================
+   Guide Gondi Character
+============================= */
+
+#guideTables .key .gondi {
+
+    font-size:
+        21px;
+
+    color:
+        var(--key-text);
+
+    line-height:
+        1;
+
+    pointer-events:
+        none;
+}
+
+
+/* =============================
+   Guide English + Hindi
+============================= */
+
+#guideTables .key small {
+
+    font-size:
+        10px;
+
+    color:
+        var(--key-small);
+
+    font-weight:
+        600;
+
+    margin-top:
+        4px;
+
+    pointer-events:
+        none;
+}
+
+
+/* =============================
+   Guide Hover
+============================= */
+
+#guideTables .key:hover {
+
+    background:
+        var(--primary);
+
+    border-color:
+        var(--primary-dark);
+
+    transform:
+        translateY(-2px);
+
+    border-bottom-width:
+        3px;
+}
+
+
+#guideTables .key:hover .gondi,
+#guideTables .key:hover small {
+
+    color:
+        #000;
+}
+
+
+/* =============================
+   Guide Animation
+============================= */
+
+@keyframes guideFadeIn {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(5px);
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* =============================
+   Guide Mobile
+============================= */
+
+@media (max-width: 768px) {
+
+    #guideTables
+    .guide-table-container.active {
+
+        gap: 6px;
+    }
+
+
+    #guideTables .key {
+
+        width: 55px;
+
+        height: 60px;
+    }
+
+
+    #guideTables .key .gondi {
+
+        font-size: 22px;
+    }
+
+}
+
+/* --- 11. FOOTER --- */
+footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    background: var(--card);
+}
+footer h2 { margin-bottom: 10px; font-size: 1.5rem; }
+footer p { color: var(--text); margin-bottom: 15px; font-size: 0.9rem; }
+footer span { color: #777; font-size: 0.8rem; }
+
+/* --- 12. RESPONSIVE --- */
+@media(max-width: 768px) {
+    #hero h1 { font-size: 2.2rem; }
+    .editor-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .keyboard-keys, .guide-table-container.active { gap: 6px; }
+    .key { width: 55px; height: 60px; }
+    .key .gondi { font-size: 22px; }
+}
+
+/* =========================================================
+   BARAH KHADI EXAMPLE
+   ========================================================= */
+
+.barahkhadi-example {
+    display: none;
+
+    width: 100%;
+    max-width: 720px;
+
+    margin: 35px auto 10px;
+
+    padding: 24px 22px;
+
+    box-sizing: border-box;
+
+    background: #151515;
+
+    border: 1px solid #292929;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* JS adds this when Barah Khadi is selected */
+
+.barahkhadi-example.visible {
+    display: block;
+}
+
+
+/* =========================================================
+   EXAMPLE TITLE
+   ========================================================= */
+
+.example-title {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #08fb8f;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 14px;
+}
+
+
+/* =========================================================
+   HINDI TEXT
+   ========================================================= */
+
+.example-hindi {
+
+    font-family:
+        'Poppins',
+        sans-serif;
+
+    font-size: 24px;
+
+    font-weight: 500;
+
+    color: #ffffff;
+
+    line-height: 1.5;
+
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   SCRIPT TRANSLATION
+   ========================================================= */
+
+.example-script {
+
+    display: none;
+
+    font-size: 32px;
+
+    font-weight: 500;
+
+    color: #08fb8f;
+
+    line-height: 1.6;
+
+    white-space: nowrap;
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    padding: 8px 4px;
+
+    scrollbar-width: none;
+}
+
+
+.example-script::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .barahkhadi-example {
+
+        margin-top: 28px;
+
+        padding: 20px 16px;
+
+        border-radius: 16px;
+
+    }
+
+
+    .example-title {
+
+        font-size: 13px;
+
+        margin-bottom: 10px;
+
+    }
+
+
+    .example-hindi {
+
+        font-size: 21px;
+
+        line-height: 1.5;
+
+    }
+
+
+    .example-script {
+
+        font-size: 28px;
+
+        line-height: 1.5;
+
+    }
+
+}
+
+/* ================================
+   FOOTER ABOUT
+================================ */
+
+.footer-about {
+    max-width: 760px;
+    margin: 0 auto 45px;
+    text-align: center;
+}
+
+.footer-about h3 {
+    margin: 0 0 18px;
+
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.footer-about p {
+    margin: 10px auto;
+
+    max-width: 680px;
+
+    color: #9b9b9b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.footer-about strong {
+    color: #00ff99;
+}
+
+/* Developer */
+
+.footer-developer {
+    margin-top: 28px;
+    padding-top: 25px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer-developer span {
+    color: #777;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-developer strong {
+    font-size: 18px;
+}
+
+.footer-developer small {
+    color: #777;
+    font-size: 12px;
+}
+
+/* Email */
+
+.footer-email {
+    display: inline-block;
+
+    margin-top: 18px;
+
+    color: #00ff99;
+    font-size: 13px;
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.footer-email:hover {
+    opacity: 0.75;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .footer-about {
+        padding: 0 15px;
+    }
+
+    .footer-about h3 {
+        font-size: 21px;
+    }
+
+    .footer-about p {
+        font-size: 13px;
+    }
+
+}

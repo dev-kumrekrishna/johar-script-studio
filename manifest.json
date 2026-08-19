@@ -1,0 +1,27 @@
+{
+  "name": "Johar Script Studio",
+  "short_name": "Johar Script",
+  "description": "Write, Learn, Convert and Preserve Indigenous Scripts.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0b0b0b",
+  "background_color": "#0b0b0b",
+  "lang": "en-IN",
+
+  "icons": [
+    {
+      "src": "./assets/logo/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/logo/icon-512",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

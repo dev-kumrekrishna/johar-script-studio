@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johar Script Studio</title>
+    <meta
+    name="description"
+    content="Johar Script Studio — Write, Learn, Convert and Preserve Indigenous Scripts."
+>
+    <link rel="icon" href="assets/logo/logo.png">
+    <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#0b0b0b">
+
+<meta
+    name="mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Johar Script Studio"
+>
+
+<link
+    rel="apple-touch-icon"
+    href="assets/logo/icon-192.png"
+>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!--================ LOADER ================-->
+    <div class="loader">
+        <div class="loader-logo">
+            <img src="assets/logo/logo.png" alt="Johar Script Studio">
+        </div>
+        <h2>Johar Script Studio</h2>
+        <span>Loading...</span>
+    </div>
+
+    <!--================ HEADER ================-->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo/logo.png" alt="Logo">
+                <div>
+                    <h2>Johar Script Studio</h2>
+                    <p>Write • Learn • Preserve</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="themeBtn"><i class="ri-moon-line"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!--================ HERO ================-->
+    <section id="hero">
+        <div class="container">
+            <h2 id="heroGreeting" style="font-size: 2.2rem; color: #08FB8F; margin-bottom: 10px; letter-spacing: 2px;">𑴠𑴴𑴦𑴴𑴝𑵄 𑴓𑴽𑴬𑴱𑴦</h2>
+            <h1>Johar Script Unicode Studio</h1>
+            <p>Type English keys directly below. The system will convert and teach you Selected Script in real-time.</p>
+        </div>
+    </section>
+    
+    <!--================ WRITING PAD ================-->
+    <section id="editor">
+        <div class="container">
+            <div class="editor-header">
+                <h2>English Writing Pad</h2>
+                <span>Type standard English keys...</span>
+            </div>
+            
+            <!-- Editor Box ab English text store karega -->
+            <textarea id="editorBox" placeholder="Example: p u r u d..." style="font-family: 'Poppins', sans-serif; font-weight: 500; letter-spacing: 1px;"></textarea>
+            
+            <!-- Live Translation Display Board -->
+            <div class="editor-header" style="margin-top: 35px;">
+                <h2>Live Translation</h2>
+            </div>
+            <div id="visualBoard" class="visual-board">
+                <span class="placeholder-text">Translation will appear here...</span>
+            </div>
+        </div>
+    </section>
+
+    <!--================ TOOLBAR ================-->
+    <section id="toolbar">
+        <div class="container">
+            <div class="tool">
+                <label>Script</label>
+                <select id="script">
+                    <option value="masaram">Masaram Gondi</option>
+                    <option value="gunjala">Gunjala Gondi</option>
+                </select>
+            </div>
+
+            <div class="tool">
+                <label>Visual Font Size</label>
+                <select id="fontSize">
+                 <option value="12px">12px</option>
+                 <option value="14px">14px</option>
+                 <option value="16px">16px</option>
+                 <option value="18px">18px</option>
+                 <option value="20px">20px</option>
+                 <option value="24px">24px</option>
+                 <option value="28px">28px</option>
+                 <option value="32px">32px</option>
+                 <option value="40px">40px</option>
+                 <option value="48px">48px</option>
+
+                </select>
+            </div>
+            <div class="toolbar-buttons">
+    <button id="toggleKeyboard"><i class="ri-keyboard-line"></i> Keyboard</button>
+    <button id="copyBtn"><i class="ri-file-copy-line"></i> Copy</button>
+    <button id="clearBtn"><i class="ri-delete-bin-line"></i> Clear</button>
+    <button id="downloadBtn"><i class="ri-download-line"></i> Download</button>
+</div>
+        </div>
+    </section>
+
+    <!--================ VIRTUAL KEYBOARD ================-->
+    <section id="keyboard" style="display: none;">
+        <div class="container">
+            <div class="section-title" style="margin-bottom: 15px;">
+                <h2>Virtual Keyboard</h2>
+            </div>
+            <div class="keyboard-wrapper">
+                <div class="keyboard-keys" id="dynamicKeyboard"></div>
+                <div class="keyboard-actions">
+                    <button class="action-key" id="kb-backspace"><i class="ri-delete-back-2-line"></i> Backspace</button>
+                    <button class="action-key" id="kb-space">Space</button>
+                    <button class="action-key" id="kb-enter">Enter <i class="ri-corner-down-left-line"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--================ TYPING GUIDE ================-->
+    <section id="characters">
+        <div class="container">
+            <div class="section-title">
+                <h2>Typing Guide</h2>
+                <p>Click below to learn how to type different characters.</p>
+            </div>
+            <div class="guide-filters">
+                <button class="guide-btn active" data-guide="vowels">Vowels (स्वर)</button>
+                <button class="guide-btn" data-guide="matras">Matras (मात्रा)</button>
+                <button class="guide-btn" data-guide="consonants">Consonants (व्यंजन)</button>
+                <button class="guide-btn" data-guide="barahkhadi">Barah Khadi (बारहखड़ी)</button>
+                <button class="guide-btn" data-guide="numbers">Numbers (संख्या)</button>
+            </div>
+            <div id="guideTables"></div>
+            <!--================ BARAH KHADI EXAMPLE ================-->
+<div id="barahkhadiExample" class="barahkhadi-example">
+
+    <div class="example-title">
+        Example
+    </div>
+
+    <div class="example-hindi">
+        मेरा गाँव सुंदर है।
+    </div>
+
+    <!-- Masaram Gondi -->
+    <div
+        class="example-script"
+        data-script="masaram"
+    >
+        𑴤𑴺𑴦𑴱 𑴎𑴱𑵀𑴨 𑴫𑴴𑴟𑵄𑴝𑴦 𑴬𑴼
+    </div>
+
+    <!-- Gunjala Gondi -->
+    <div
+        class="example-script"
+        data-script="gunjala"
+    >
+        𑵰𑶐𑶈𑶊 𑵶𑶊𑶕𑵭 𑶉𑶍𑵺𑶗𑵸𑶈 𑶇𑶑
+    </div>
+
+</div>
+        </div>
+    </section>
+
+    <!--================ FOOTER ================-->
+    <footer>
+      <!-- Footer About -->
+<div class="footer-about">
+
+    <h3>About Johar Script Studio</h3>
+
+    <p>
+        <strong>Johar Script Studio</strong> is a digital platform
+        created to make Indigenous scripts easier to write, learn
+        and preserve.
+    </p>
+
+    <p>
+        The project focuses on script typing, transliteration,
+        learning resources and digital tools for Indigenous
+        language and writing systems.
+    </p>
+
+    <p>
+        Johar Script Studio is also part of the wider work of
+        <strong>Koya Community</strong> — a platform dedicated to
+        preserving and celebrating Adivasi culture, history and
+        knowledge.
+    </p>
+
+    <div class="footer-developer">
+
+        <span>Developed by</span>
+
+        <strong>Krishna Kumre</strong>
+
+        <small>
+            Vella Berojgaar from Koyadhana, Pandhurna, MP 📍
+        </small>
+
+    </div>
+
+    <a
+        class="footer-email"
+        href="mailto:dev.kumrekrishna@gmail.com"
+    >
+        ✉️ dev.kumrekrishna@gmail.com
+    </a>
+
+</div>
+
+        <div class="container">
+            <h2>Johar Script Studio</h2>
+            <p>Write • Learn • Convert • Preserve</p>
+            <span>© 2026 Johar Script Studio. All Rights Reserved.</span>
+        </div>
+    </footer>
+
+    <!--================ JAVASCRIPT ================-->
+    <script src="js/ui.js"></script>
+    <script src="scripts/masaram.js"></script>
+    <script src="scripts/gunjala.js"></script>
+    <script src="scripts/olchiki.js"></script>
+    <script src="js/pad.js"></script> <!-- Yeh Nayi File Hai -->
+    <script src="js/translate.js"></script>
+    <script src="js/keyboard.js"></script>
+    <script src="js/direction.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
