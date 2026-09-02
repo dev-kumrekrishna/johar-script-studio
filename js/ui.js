@@ -5,7 +5,7 @@
 
 
 // =============================
-// DOM Elements
+// DOM ELEMENTS
 // =============================
 
 const copyBtn =
@@ -30,6 +30,64 @@ const scriptSelect =
     document.getElementById("script");
 
 
+// ============================================================
+// INSERT TEXT AT CURRENT CURSOR POSITION
+// Used by Virtual Keyboard: Space + Enter
+// ============================================================
+
+window.insertAtCursor = function (text) {
+
+    const editorBox =
+        document.getElementById("editorBox");
+
+    if (!editorBox) {
+        return;
+    }
+
+
+    const start =
+        editorBox.selectionStart ??
+        editorBox.value.length;
+
+    const end =
+        editorBox.selectionEnd ??
+        start;
+
+
+    editorBox.value =
+        editorBox.value.slice(
+            0,
+            start
+        ) +
+        text +
+        editorBox.value.slice(
+            end
+        );
+
+
+    const newPosition =
+        start + text.length;
+
+
+    editorBox.selectionStart =
+        newPosition;
+
+    editorBox.selectionEnd =
+        newPosition;
+
+
+    editorBox.focus();
+
+
+    // Trigger live translation
+    editorBox.dispatchEvent(
+        new Event("input", {
+            bubbles: true
+        })
+    );
+};
+
+
 // =============================
 // THEME TOGGLE
 // =============================
@@ -47,7 +105,9 @@ if (themeBtn) {
             themeBtn.querySelector("i");
 
 
-        if (!icon) return;
+        if (!icon) {
+            return;
+        }
 
 
         if (
@@ -82,210 +142,178 @@ if (themeBtn) {
 
 
 // ============================================================
-// COPY TRANSLATED GONDI TEXT
+// GET FINAL GONDI TEXT
+// Central function used by COPY + DOWNLOAD
 // ============================================================
 
-if (copyBtn) {
+window.getUIFinalGondiText = function () {
 
-    copyBtn.addEventListener("click", async () => {
-
-        let finalGondiText = "";
+    let finalGondiText = "";
 
 
-        // ====================================================
-        // 1. FIRST: LIVE TRANSLATION TOKENS
-        // ====================================================
+    // ========================================================
+    // 1. LIVE TRANSLATION TOKENS
+    // ========================================================
 
-        if (
-            Array.isArray(window.parsedGondiTokens) &&
-            window.parsedGondiTokens.length > 0
-        ) {
+    if (
+        Array.isArray(window.parsedGondiTokens) &&
+        window.parsedGondiTokens.length > 0
+    ) {
 
-            finalGondiText =
-                window.parsedGondiTokens.join("");
+        finalGondiText =
+            window.parsedGondiTokens.join("");
 
-        }
-
-
-        // ====================================================
-        // 2. SECOND: EXISTING getFinalText()
-        // ====================================================
-
-        if (
-            !finalGondiText.trim() &&
-            typeof window.getFinalText === "function"
-        ) {
-
-            try {
-
-                finalGondiText =
-                    window.getFinalText();
-
-            }
-
-            catch (error) {
-
-                console.warn(
-                    "getFinalText() failed:",
-                    error
-                );
-
-            }
-
-        }
+    }
 
 
-        // ====================================================
-        // 3. THIRD: DIRECT TRANSLITERATION FALLBACK
-        // ====================================================
+    // ========================================================
+    // 2. EXISTING getFinalText()
+    // ========================================================
 
-        if (
-            !finalGondiText.trim() &&
-            editor &&
-            editor.value.trim() &&
-            typeof window.transliterateSentence ===
-                "function"
-        ) {
-
-            try {
-
-                const result =
-                    window.transliterateSentence(
-                        editor.value,
-                        scriptSelect
-                            ? scriptSelect.value
-                            : "masaram"
-                    );
-
-                if (
-                    result &&
-                    typeof result.gondi === "string"
-                ) {
-
-                    finalGondiText =
-                        result.gondi;
-
-                }
-
-            }
-
-            catch (error) {
-
-                console.warn(
-                    "Direct transliteration failed:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        // ====================================================
-        // NOTHING TO COPY
-        // ====================================================
-
-        if (
-            !finalGondiText ||
-            !finalGondiText.trim()
-        ) {
-
-            alert(
-                "Write something to copy!"
-            );
-
-            return;
-
-        }
-
-
-        // ====================================================
-        // RTL SUPPORT
-        // ====================================================
-
-        let textToCopy =
-            finalGondiText;
-
-        if (
-            window.currentDirection ===
-            "rtl"
-        ) {
-
-            if (
-                !textToCopy.startsWith(
-                    "\u202E"
-                )
-            ) {
-
-                textToCopy =
-                    "\u202E" +
-                    textToCopy;
-
-            }
-
-        }
-
-
-        // ====================================================
-        // COPY
-        // ====================================================
+    if (
+        !finalGondiText.trim() &&
+        typeof window.getFinalText ===
+            "function"
+    ) {
 
         try {
 
-            await navigator.clipboard.writeText(
-                textToCopy
-            );
-
-
-            alert(
-                "Gondi Translation Copied Successfully!"
-            );
-
+            finalGondiText =
+                window.getFinalText();
 
         }
 
         catch (error) {
 
-            console.error(
-                "Could not copy Gondi translation:",
+            console.warn(
+                "getFinalText() failed:",
                 error
             );
 
+        }
+
+    }
+
+
+    // ========================================================
+    // 3. DIRECT TRANSLITERATION FALLBACK
+    // ========================================================
+
+    if (
+        !finalGondiText.trim() &&
+        editor &&
+        editor.value.trim() &&
+        typeof window.transliterateSentence ===
+            "function"
+    ) {
+
+        try {
+
+            const result =
+                window.transliterateSentence(
+                    editor.value,
+                    scriptSelect
+                        ? scriptSelect.value
+                        : "masaram"
+                );
+
+
+            if (
+                result &&
+                typeof result.gondi ===
+                    "string"
+            ) {
+
+                finalGondiText =
+                    result.gondi;
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "Direct transliteration failed:",
+                error
+            );
+
+        }
+
+    }
+
+
+    return finalGondiText || "";
+};
+
+
+// ============================================================
+// COPY TRANSLATED GONDI TEXT
+// ============================================================
+
+if (copyBtn) {
+
+    copyBtn.addEventListener(
+        "click",
+        async () => {
+
+            let finalGondiText =
+                window.getUIFinalGondiText();
+
 
             // =================================================
-            // OLD BROWSER FALLBACK
+            // NOTHING TO COPY
+            // =================================================
+
+            if (
+                !finalGondiText ||
+                !finalGondiText.trim()
+            ) {
+
+                alert(
+                    "Write something to copy!"
+                );
+
+                return;
+            }
+
+
+            // =================================================
+            // RTL SUPPORT
+            // =================================================
+
+            let textToCopy =
+                finalGondiText;
+
+
+            if (
+                window.currentDirection ===
+                "rtl"
+            ) {
+
+                if (
+                    !textToCopy.startsWith(
+                        "\u202E"
+                    )
+                ) {
+
+                    textToCopy =
+                        "\u202E" +
+                        textToCopy;
+
+                }
+
+            }
+
+
+            // =================================================
+            // COPY
             // =================================================
 
             try {
 
-                const textarea =
-                    document.createElement(
-                        "textarea"
-                    );
-
-                textarea.value =
-                    textToCopy;
-
-                textarea.style.position =
-                    "fixed";
-
-                textarea.style.left =
-                    "-9999px";
-
-                document.body.appendChild(
-                    textarea
-                );
-
-                textarea.focus();
-
-                textarea.select();
-
-                document.execCommand(
-                    "copy"
-                );
-
-                document.body.removeChild(
-                    textarea
+                await navigator.clipboard.writeText(
+                    textToCopy
                 );
 
 
@@ -295,29 +323,88 @@ if (copyBtn) {
 
             }
 
-            catch (fallbackError) {
+            catch (error) {
 
                 console.error(
-                    "Copy fallback failed:",
-                    fallbackError
+                    "Could not copy Gondi translation:",
+                    error
                 );
 
-                alert(
-                    "Failed to copy text."
-                );
+
+                // =============================================
+                // OLD BROWSER FALLBACK
+                // =============================================
+
+                try {
+
+                    const textarea =
+                        document.createElement(
+                            "textarea"
+                        );
+
+
+                    textarea.value =
+                        textToCopy;
+
+
+                    textarea.style.position =
+                        "fixed";
+
+                    textarea.style.left =
+                        "-9999px";
+
+
+                    document.body.appendChild(
+                        textarea
+                    );
+
+
+                    textarea.focus();
+
+                    textarea.select();
+
+
+                    document.execCommand(
+                        "copy"
+                    );
+
+
+                    document.body.removeChild(
+                        textarea
+                    );
+
+
+                    alert(
+                        "Gondi Translation Copied Successfully!"
+                    );
+
+                }
+
+                catch (fallbackError) {
+
+                    console.error(
+                        "Copy fallback failed:",
+                        fallbackError
+                    );
+
+
+                    alert(
+                        "Failed to copy text."
+                    );
+
+                }
 
             }
 
         }
-
-    });
+    );
 
 }
 
 
-// =============================
+// ============================================================
 // DOWNLOAD TXT
-// =============================
+// ============================================================
 
 if (downloadBtn) {
 
@@ -325,22 +412,31 @@ if (downloadBtn) {
         "click",
         () => {
 
+            // Use the same reliable system as COPY
             const finalGondiText =
-                typeof window.getFinalText === "function"
-                    ? window.getFinalText()
-                    : "";
+                window.getUIFinalGondiText();
 
 
-            if (!finalGondiText.trim()) {
+            // ================================================
+            // NOTHING TO DOWNLOAD
+            // ================================================
+
+            if (
+                !finalGondiText ||
+                !finalGondiText.trim()
+            ) {
 
                 alert(
                     "Write something to download!"
                 );
 
                 return;
-
             }
 
+
+            // ================================================
+            // FILE CONTENT
+            // ================================================
 
             let fileContent =
                 finalGondiText;
@@ -348,19 +444,34 @@ if (downloadBtn) {
 
             // RTL support
             if (
-                window.currentDirection === "rtl"
+                window.currentDirection ===
+                "rtl"
             ) {
 
-                fileContent =
-                    "\u202E" +
-                    finalGondiText;
+                if (
+                    !fileContent.startsWith(
+                        "\u202E"
+                    )
+                ) {
+
+                    fileContent =
+                        "\u202E" +
+                        fileContent;
+
+                }
 
             }
 
 
+            // ================================================
+            // CREATE TXT FILE
+            // ================================================
+
             const blob =
                 new Blob(
-                    [fileContent],
+                    [
+                        fileContent
+                    ],
                     {
                         type:
                             "text/plain;charset=utf-8"
@@ -368,37 +479,84 @@ if (downloadBtn) {
                 );
 
 
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
             const link =
-                document.createElement("a");
+                document.createElement(
+                    "a"
+                );
 
 
             link.href =
-                URL.createObjectURL(blob);
+                url;
 
 
-            const scriptName =
+            // ================================================
+            // FILE NAME
+            // ================================================
+
+            let scriptName =
+                "Script";
+
+
+            if (
                 scriptSelect &&
                 scriptSelect.selectedIndex >= 0
+            ) {
 
-                    ? scriptSelect
+                scriptName =
+                    scriptSelect
                         .options[
                             scriptSelect.selectedIndex
                         ]
-                        .text
+                        .text;
 
-                    : "Script";
+            }
+
+
+            scriptName =
+                scriptName
+                    .replace(
+                        /[^\w\u0900-\u097F-]+/g,
+                        "_"
+                    )
+                    .replace(
+                        /^_+|_+$/g,
+                        ""
+                    );
 
 
             link.download =
-                `JoharStudio_${scriptName
-                    .replace(/\s+/g, "_")}.txt`;
+                `JoharStudio_${scriptName || "Script"}.txt`;
+
+
+            // ================================================
+            // DOWNLOAD
+            // ================================================
+
+            document.body.appendChild(
+                link
+            );
 
 
             link.click();
 
 
-            URL.revokeObjectURL(
-                link.href
+            document.body.removeChild(
+                link
+            );
+
+
+            // Give browser time to start download
+            setTimeout(
+                () => {
+                    URL.revokeObjectURL(url);
+                },
+                1000
             );
 
         }
@@ -407,9 +565,9 @@ if (downloadBtn) {
 }
 
 
-// =============================
+// ============================================================
 // CLEAR BUTTON
-// =============================
+// ============================================================
 
 if (clearBtn) {
 
@@ -417,13 +575,34 @@ if (clearBtn) {
         "click",
         () => {
 
-            if (!confirm("Clear all text?")) {
+            if (
+                !confirm(
+                    "Clear all text?"
+                )
+            ) {
+
                 return;
             }
 
 
             if (editor) {
-                editor.value = "";
+
+                editor.value =
+                    "";
+
+            }
+
+
+            // Clear parsed translation tokens
+            if (
+                Array.isArray(
+                    window.parsedGondiTokens
+                )
+            ) {
+
+                window.parsedGondiTokens =
+                    [];
+
             }
 
 
@@ -450,16 +629,29 @@ if (clearBtn) {
 
             }
 
+
+            // Trigger input so live translation
+            // also resets
+            if (editor) {
+
+                editor.dispatchEvent(
+                    new Event("input", {
+                        bubbles: true
+                    })
+                );
+
+            }
+
         }
     );
 
 }
 
 
-// =============================
+// ============================================================
 // FONT SIZE
-// Supports 12px → whatever options exist
-// =============================
+// Supports existing options
+// ============================================================
 
 if (fontSize) {
 
@@ -469,7 +661,9 @@ if (fontSize) {
             fontSize.value;
 
 
-        if (!value) return;
+        if (!value) {
+            return;
+        }
 
 
         document.documentElement.style

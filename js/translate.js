@@ -51,30 +51,73 @@ window.updateVisualBoard = function() {
     let currentHindiWord = "";
     let fullGondiText = [];
 
-    const flushWord = () => {
-        if (currentGondiWord.length > 0) {
-            htmlContent += `
-                <div class="char-box" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: flex-end; margin: 0 10px 15px 10px;">
-                    <span class="char-gondi" style="font-family: '${currentScript === 'masaram' ? 'Masaram Gondi' : 'Gunjala Gondi'}', sans-serif; font-size: var(--visual-font-size, 38px); color: var(--white); line-height: 1;">${currentGondiWord}</span>
-                    <span class="char-trans" style="font-size: 16px; color: #08FB8F; font-weight: 600; margin-top: 8px;">${currentHindiWord}</span>
-                </div>`;
-            fullGondiText.push(currentGondiWord);
-            currentGondiWord = "";
-            currentHindiWord = "";
+    const flushWord = (removeFinalHalant = false) => {
+    if (currentGondiWord.length > 0) {
+
+        // Space/Enter par sirf LAST halant remove hoga
+        if (removeFinalHalant) {
+            const activeScriptData = window.SCRIPT_MAPPINGS[currentScript];
+
+            const halant =
+                currentScript === 'masaram'
+                    ? '𑵄'
+                    : '𑶗';
+
+            if (currentGondiWord.endsWith(halant)) {
+                currentGondiWord =
+                    currentGondiWord.slice(0, -halant.length);
+            }
+
+            // Hindi preview se bhi last halant remove
+            if (currentHindiWord.endsWith('्')) {
+                currentHindiWord =
+                    currentHindiWord.slice(0, -1);
+            }
         }
-    };
+
+        htmlContent += `
+            <div class="char-box"
+                style="display:inline-flex;
+                       flex-direction:column;
+                       align-items:center;
+                       justify-content:flex-end;
+                       margin:0 10px 15px 10px;">
+
+                <span class="char-gondi"
+                    style="font-family:'${currentScript === 'masaram' ? 'Masaram Gondi' : 'Gunjala Gondi'}';
+                           font-size:var(--visual-font-size,38px);
+                           color:var(--white);
+                           line-height:1;">
+                    ${currentGondiWord}
+                </span>
+
+                <span class="char-trans"
+                    style="font-size:16px;
+                           color:#08FB8F;
+                           font-weight:600;
+                           margin-top:8px;">
+                    ${currentHindiWord}
+                </span>
+            </div>`;
+
+        fullGondiText.push(currentGondiWord);
+
+        currentGondiWord = "";
+        currentHindiWord = "";
+    }
+};
 
     let i = 0;
     while (i < text.length) {
         if (text[i] === ' ') {
-            flushWord();
+            flushWord(true);
             htmlContent += `<div style="width: 25px; display: inline-block;"></div>`;
             fullGondiText.push(' ');
             i++;
             continue;
         }
         if (text[i] === '\n') {
-            flushWord();
+            flushWord(true);
             htmlContent += `<div style="width: 100%; height: 0;"></div>`;
             fullGondiText.push('\n');
             i++;
