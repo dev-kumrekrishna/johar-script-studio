@@ -106,11 +106,16 @@ for (let [consKey, consData] of Object.entries(rawGunjala.baseConsonants)) {
     };
 
     // Full consonant with 'a'
-    generatedGunjalaConsonants[consKey + 'a'] = {
-        symbol: consData.symbol,
-        hindi: consData.hindi,
-        english: consKey + 'a'
-    };
+    generatedGunjalaConsonants[consKey] = {
+    symbol: consData.symbol,
+    hindi: consData.hindi + '्',
+    english: consKey
+};
+generatedGunjalaConsonants[consKey + 'a'] = {
+    symbol: consData.symbol,
+    hindi: consData.hindi,
+    english: consKey + 'a'
+};
 
     // Consonant + Matras
     for (let [matraKey, matraData] of Object.entries(rawGunjala.matras)) {

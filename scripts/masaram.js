@@ -122,6 +122,29 @@ const generatedConsonants = {};
 const halantGondi = '𑵄';
 const halantHindi = '्';
 
+const raKara = rawMasaram.matras.ra;
+
+if (raKara) {
+    for (let [consKey, consData] of Object.entries(rawMasaram.baseConsonants)) {
+
+        // consonant + ra + matra
+        for (let [matraKey, matraData] of Object.entries(rawMasaram.matras)) {
+
+            if (matraKey === 'ra' || matraKey === 'r') {
+                continue;
+            }
+
+            const combinedKey = consKey + 'r' + matraKey;
+
+            generatedConsonants[combinedKey] = {
+                symbol: consData.symbol + raKara.symbol + matraData.symbol,
+                hindi: consData.hindi + '्र' + matraData.hindi,
+                english: combinedKey
+            };
+        }
+    }
+}
+
 for (let [consKey, consData] of Object.entries(rawMasaram.baseConsonants)) {
     // 1. Standalone / Half Consonant (e.g. 'k' -> '𑴌𑵄')
     generatedConsonants[consKey] = {
