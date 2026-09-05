@@ -264,5 +264,18 @@
     <script src="js/keyboard.js"></script>
     <script src="js/direction.js"></script>
     <script src="js/script.js"></script>
+    <script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(() => {
+                console.log("Johar Script Studio SW registered.");
+            })
+            .catch(error => {
+                console.error("Service Worker registration failed:", error);
+            });
+    });
+}
+</script>
 </body>
 </html>
