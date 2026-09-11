@@ -8,11 +8,29 @@ const CACHE_NAME = "johar-script-studio-v1";
 
 // Website ke important files
 const FILES_TO_CACHE = [
-    "./",
-    "./index.html",
-    "./style.css",
-    "./script.js",
-    "./manifest.json"
+  // Root
+  "./",
+  "./index.html",
+  "./manifest.json",
+
+  // CSS
+  "./css/style.css",
+
+  // JavaScript
+  "./js/script.js",
+  "./js/keyboard.js",
+  "./js/pad.js",
+  "./js/translate.js",
+  "./js/ui.js",
+
+  // Images / Icons
+  "./icon-192.png",
+  "./icon-512.png",
+  "./logo.png",
+
+  // Fonts
+  "./fonts/GunjalaGondi-Regular.ttf",
+  "./fonts/MasaramGondi-Regular.ttf"
 ];
 
 
