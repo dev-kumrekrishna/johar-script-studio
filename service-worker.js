@@ -4,7 +4,7 @@
    Cache + Auto Update
    ========================================= */
 
-const CACHE_NAME = "johar-script-studio-v1";
+const CACHE_NAME = "johar-script-studio-v2";
 
 // Website ke important files
 const FILES_TO_CACHE = [
