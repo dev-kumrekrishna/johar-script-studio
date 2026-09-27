@@ -104,7 +104,7 @@ const translationOverrides = {
     'T': { symbol: 'ᱴ', hindi: 'ट' },
     'Th': { symbol: 'ᱴᱷ', hindi: 'ठ' },
     'D': { symbol: 'ᱰ', hindi: 'ड' },
-    'D': { symbol: 'ᱰᱷ', hindi: 'ढ' },
+    'Dh': { symbol: 'ᱰᱷ', hindi: 'ढ' },
     'N': { symbol: 'ᱬ', hindi: 'ण' },
 
     't': { symbol: 'ᱛ', hindi: 'त' },
