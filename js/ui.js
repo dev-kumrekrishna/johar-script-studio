@@ -248,156 +248,223 @@ window.getUIFinalGondiText = function () {
 
 
 // ============================================================
-// COPY TRANSLATED GONDI TEXT
+// COPY TRANSLATED TEXT
+// LTR / RTL OPTIONS
 // ============================================================
 
 if (copyBtn) {
 
-    copyBtn.addEventListener(
-        "click",
-        async () => {
+    copyBtn.addEventListener("click", async () => {
 
-            let finalGondiText =
-                window.getUIFinalGondiText();
+        const finalText =
+            window.getUIFinalGondiText();
+
+        // NOTHING TO COPY
+        if (!finalText || !finalText.trim()) {
+            alert("Write something to copy!");
+            return;
+        }
+
+        // --------------------------------------------------------
+        // CREATE COPY OPTION MENU
+        // --------------------------------------------------------
+
+        const oldMenu =
+            document.getElementById("copyDirectionMenu");
+
+        if (oldMenu) {
+            oldMenu.remove();
+        }
+
+        const menu =
+            document.createElement("div");
+
+        menu.id = "copyDirectionMenu";
+
+        menu.style.position = "fixed";
+        menu.style.zIndex = "99999";
+        menu.style.left = "50%";
+        menu.style.top = "50%";
+        menu.style.transform = "translate(-50%, -50%)";
+        menu.style.background = "#111";
+        menu.style.border = "1px solid #08fb8f";
+        menu.style.borderRadius = "18px";
+        menu.style.padding = "20px";
+        menu.style.width = "260px";
+        menu.style.boxShadow =
+            "0 10px 40px rgba(0,0,0,.6)";
+        menu.style.textAlign = "center";
+
+        menu.innerHTML = `
+            <div style="
+                color:white;
+                font-size:20px;
+                font-weight:700;
+                margin-bottom:16px;
+            ">
+                Copy Text
+            </div>
+
+            <button id="copyLTRBtn" style="
+                width:100%;
+                padding:13px;
+                margin-bottom:10px;
+                border:none;
+                border-radius:12px;
+                background:#08fb8f;
+                color:#000;
+                font-weight:700;
+                font-size:16px;
+                cursor:pointer;
+            ">
+                LTR — abcd
+            </button>
+
+            <button id="copyRTLBtn" style="
+                width:100%;
+                padding:13px;
+                margin-bottom:10px;
+                border:none;
+                border-radius:12px;
+                background:#08fb8f;
+                color:#000;
+                font-weight:700;
+                font-size:16px;
+                cursor:pointer;
+            ">
+                RTL — dcba
+            </button>
+
+            <button id="closeCopyMenu" style="
+                width:100%;
+                padding:10px;
+                border:1px solid #555;
+                border-radius:12px;
+                background:#222;
+                color:#aaa;
+                font-weight:600;
+                cursor:pointer;
+            ">
+                Cancel
+            </button>
+        `;
+
+        document.body.appendChild(menu);
 
 
-            // =================================================
-            // NOTHING TO COPY
-            // =================================================
+        // --------------------------------------------------------
+        // COPY FUNCTION
+        // --------------------------------------------------------
 
-            if (
-                !finalGondiText ||
-                !finalGondiText.trim()
-            ) {
-
-                alert(
-                    "Write something to copy!"
-                );
-
-                return;
-            }
-
-
-            // =================================================
-            // RTL SUPPORT
-            // =================================================
-
-            let textToCopy =
-                finalGondiText;
-
-
-            if (
-                window.currentDirection ===
-                "rtl"
-            ) {
-
-                if (
-                    !textToCopy.startsWith(
-                        "\u202E"
-                    )
-                ) {
-
-                    textToCopy =
-                        "\u202E" +
-                        textToCopy;
-
-                }
-
-            }
-
-
-            // =================================================
-            // COPY
-            // =================================================
+        async function copyText(text, message) {
 
             try {
 
-                await navigator.clipboard.writeText(
-                    textToCopy
-                );
+                await navigator.clipboard.writeText(text);
 
+                menu.remove();
 
-                alert(
-                    "Gondi Translation Copied Successfully!"
-                );
+                alert(message);
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(
-                    "Could not copy Gondi translation:",
+                    "Copy failed:",
                     error
                 );
 
-
-                // =============================================
                 // OLD BROWSER FALLBACK
-                // =============================================
 
                 try {
 
                     const textarea =
-                        document.createElement(
-                            "textarea"
-                        );
+                        document.createElement("textarea");
 
+                    textarea.value = text;
 
-                    textarea.value =
-                        textToCopy;
+                    textarea.style.position = "fixed";
+                    textarea.style.left = "-9999px";
 
-
-                    textarea.style.position =
-                        "fixed";
-
-                    textarea.style.left =
-                        "-9999px";
-
-
-                    document.body.appendChild(
-                        textarea
-                    );
-
+                    document.body.appendChild(textarea);
 
                     textarea.focus();
-
                     textarea.select();
 
+                    document.execCommand("copy");
 
-                    document.execCommand(
-                        "copy"
-                    );
+                    document.body.removeChild(textarea);
 
+                    menu.remove();
 
-                    document.body.removeChild(
-                        textarea
-                    );
+                    alert(message);
 
-
-                    alert(
-                        "Gondi Translation Copied Successfully!"
-                    );
-
-                }
-
-                catch (fallbackError) {
+                } catch (fallbackError) {
 
                     console.error(
                         "Copy fallback failed:",
                         fallbackError
                     );
 
-
-                    alert(
-                        "Failed to copy text."
-                    );
+                    alert("Failed to copy text.");
 
                 }
 
             }
 
         }
-    );
+
+
+        // --------------------------------------------------------
+        // LTR COPY
+        // --------------------------------------------------------
+
+        document
+            .getElementById("copyLTRBtn")
+            .addEventListener("click", () => {
+
+                copyText(
+                    finalText,
+                    "LTR text copied successfully!"
+                );
+
+            });
+
+
+        // --------------------------------------------------------
+        // RTL COPY
+        // ACTUAL CHARACTER REVERSAL
+        // --------------------------------------------------------
+
+        document
+            .getElementById("copyRTLBtn")
+            .addEventListener("click", () => {
+
+                const rtlText =
+                    Array.from(finalText)
+                        .reverse()
+                        .join("");
+
+                copyText(
+                    rtlText,
+                    "RTL text copied successfully!"
+                );
+
+            });
+
+
+        // --------------------------------------------------------
+        // CLOSE
+        // --------------------------------------------------------
+
+        document
+            .getElementById("closeCopyMenu")
+            .addEventListener("click", () => {
+
+                menu.remove();
+
+            });
+
+    });
 
 }
 

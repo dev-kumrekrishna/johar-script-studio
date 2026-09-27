@@ -14,7 +14,10 @@ const SCRIPT_GREETINGS = {
         "𑴘𑴦𑴴𑴠𑴴 𑴦𑴬𑴱𑴓𑴽",
 
     gunjala:
-        "𑶂𑶈𑶍𑶅𑶍 𑶈𑶇𑶊𑶀𑶓"
+        "𑶂𑶈𑶍𑶅𑶍 𑶈𑶇𑶊𑶀𑶓",
+
+    olchiki:
+        "ᱡᱚᱦᱟᱨ ᱜᱮ"
 
 };
 
@@ -26,45 +29,78 @@ const SCRIPT_GREETINGS = {
 function getScriptFont(scriptName) {
 
     if (scriptName === "gunjala") {
-
         return "'Gunjala Gondi', sans-serif";
+    }
 
+    if (scriptName === "olchiki") {
+        return "'Noto Sans Ol Chiki', sans-serif";
     }
 
     return "'Masaram Gondi', sans-serif";
-
 }
 
 
 // ============================================================
-// HERO GREETING
+// AUTO TYPING HERO GREETING
 // ============================================================
 
-function updateHeroGreeting(scriptName) {
+const GREETING_KEYS = Object.keys(SCRIPT_GREETINGS);
+let currentGreetingIndex = 0;
+let currentCharIndex = 0;
+let isDeletingText = false;
+let typeSpeed = 100;
 
-    const heroGreeting =
-        document.getElementById("heroGreeting");
+function startAutoGreeting() {
 
+    const heroGreeting = document.getElementById("heroGreeting");
     if (!heroGreeting) return;
 
+    const currentScript = GREETING_KEYS[currentGreetingIndex];
+    const fullText = SCRIPT_GREETINGS[currentScript];
 
-    heroGreeting.style.fontFamily =
-        getScriptFont(scriptName);
+    // Apply font and direction when starting a new word
+    if (currentCharIndex === 0 && !isDeletingText) {
+        heroGreeting.style.fontFamily = getScriptFont(currentScript);
+        heroGreeting.style.whiteSpace = "nowrap";
+        heroGreeting.style.letterSpacing = "0";
+        heroGreeting.style.lineHeight = "1.4";
+        
+        // Apply RTL for Masaram and Gunjala
+        if (currentScript === "masaram" || currentScript === "gunjala") {
+            heroGreeting.style.direction = "rtl";
+            heroGreeting.setAttribute("dir", "rtl");
+        } else {
+            heroGreeting.style.direction = "ltr";
+            heroGreeting.setAttribute("dir", "ltr");
+        }
+    }
 
-    heroGreeting.style.whiteSpace =
-        "nowrap";
+    // Update text content
+    heroGreeting.textContent = fullText.substring(0, currentCharIndex);
 
-    heroGreeting.style.letterSpacing =
-        "0";
+    // Determine speed and state
+    if (isDeletingText) {
+        typeSpeed = 50; // Faster when deleting
+        currentCharIndex--;
+    } else {
+        typeSpeed = 120; // Normal typing speed
+        currentCharIndex++;
+    }
 
-    heroGreeting.style.lineHeight =
-        "1.4";
+    // Word complete, prepare to delete
+    if (!isDeletingText && currentCharIndex > fullText.length) {
+        typeSpeed = 2500; // Pause at the end of the word
+        isDeletingText = true;
+    } 
+    // Word fully deleted, move to next script
+    else if (isDeletingText && currentCharIndex === 0) {
+        isDeletingText = false;
+        currentGreetingIndex = (currentGreetingIndex + 1) % GREETING_KEYS.length;
+        typeSpeed = 500; // Pause before typing next word
+    }
 
-
-    heroGreeting.textContent =
-        SCRIPT_GREETINGS[scriptName] ||
-        SCRIPT_GREETINGS.masaram;
-
+    // Loop
+    setTimeout(startAutoGreeting, typeSpeed);
 }
 
 
@@ -615,11 +651,8 @@ function handleScriptChange(
 
     // ========================================================
     // HERO
+    // Note: Removed updateHeroGreeting since it's now automated
     // ========================================================
-
-    updateHeroGreeting(
-        scriptName
-    );
 
 
     // ========================================================
@@ -750,6 +783,13 @@ window.addEventListener(
             handleScriptChange(
                 selectedScript
             );
+
+
+            // ==================================================
+            // START HERO AUTO TYPING EFFECT
+            // ==================================================
+            
+            startAutoGreeting();
 
 
             // ==================================================
