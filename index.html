@@ -74,7 +74,7 @@
     <!--================ HERO ================-->
     <section id="hero">
         <div class="container">
-            <h2 id="heroGreeting" style="font-size: 2.2rem; color: #08FB8F; margin-bottom: 10px; letter-spacing: 2px;">𑴠𑴴𑴦𑴴𑴝𑵄 𑴓𑴽𑴬𑴱𑴦</h2>
+            <h2 id="heroGreeting">𑴠𑴴𑴦𑴴𑴝𑵄 𑴓𑴽𑴬𑴱𑴦</h2>
             <h1>Johar Script Unicode Studio</h1>
             <p>Type English keys directly below. The system will convert and teach you Selected Script in real-time.</p>
         </div>
@@ -109,6 +109,7 @@
                 <select id="script">
                     <option value="masaram">Masaram Gondi</option>
                     <option value="gunjala">Gunjala Gondi</option>
+                    <option value="olchiki">Ol Chiki - Santhali</option>
                 </select>
             </div>
 
@@ -230,10 +231,10 @@
 
         <span>Developed by</span>
 
-        <strong>Krishna Kumre</strong>
+        <strong>Koitur Kumre Krishna</strong>
 
         <small>
-            Vella Berojgaar from Koyadhana, Pandhurna, MP 📍
+            An Unemployed guy with badass skills from Koyadhana, Pandhurna, MP 📍
         </small>
 
     </div>
@@ -262,20 +263,6 @@
     <script src="js/pad.js"></script> <!-- Yeh Nayi File Hai -->
     <script src="js/translate.js"></script>
     <script src="js/keyboard.js"></script>
-    <script src="js/direction.js"></script>
     <script src="js/script.js"></script>
-    <script>
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js")
-            .then(() => {
-                console.log("Johar Script Studio SW registered.");
-            })
-            .catch(error => {
-                console.error("Service Worker registration failed:", error);
-            });
-    });
-}
-</script>
 </body>
 </html>
