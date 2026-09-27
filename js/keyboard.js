@@ -221,10 +221,17 @@ window.renderVirtualKeyboard = function (scriptName) {
     // SCRIPT FONT
     // ======================================================
 
-    const fontFamily =
-        scriptName === "gunjala"
-            ? "'Gunjala Gondi', sans-serif"
-            : "'Masaram Gondi', sans-serif";
+    let fontFamily;
+
+if (scriptName === "gunjala") {
+    fontFamily = "'Gunjala Gondi', sans-serif";
+}
+else if (scriptName === "olchiki") {
+    fontFamily = "'Noto Sans Ol Chiki', sans-serif";
+}
+else {
+    fontFamily = "'Masaram Gondi', sans-serif";
+}
 
 
     // ======================================================
