@@ -308,11 +308,16 @@ header .container {
 }
 
 #heroGreeting {
-    white-space: nowrap;
-
-    letter-spacing: 0 !important;
-
-    word-spacing: 8px;
+    background: linear-gradient(90deg, #00FF87, #00D9FF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    display: inline-block;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
 }
 
 #hero h1 {
