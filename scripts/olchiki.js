@@ -98,7 +98,7 @@ const translationOverrides = {
     'k': { symbol: 'ᱠ', hindi: 'क' },
     'kh': { symbol: 'ᱠᱷ', hindi: 'ख' },
     'g': { symbol: 'ᱜ', hindi: 'ग' },
-    'g': { symbol: 'ᱜᱷ', hindi: 'घ' },
+    'gh': { symbol: 'ᱜᱷ', hindi: 'घ' },
 
     'c': { symbol: 'ᱪ', hindi: 'च' },
     'ch': { symbol: 'ᱪᱷ', hindi: 'छ' },
@@ -128,7 +128,7 @@ const translationOverrides = {
     'r': { symbol: 'ᱨ', hindi: 'र' },
     'l': { symbol: 'ᱞ', hindi: 'ल' },
     'w': { symbol: 'ᱣ', hindi: 'व' },
-    
+    'v': { symbol: 'ᱶ', hindi: 'व' },
     's': { symbol: 'ᱥ', hindi: 'स' },
     'h': { symbol: 'ᱦ', hindi: 'ह' },
     'R': { symbol: 'ᱲ', hindi: 'ड़' },
