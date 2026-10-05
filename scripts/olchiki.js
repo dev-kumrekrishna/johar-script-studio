@@ -6,22 +6,24 @@ window.SCRIPT_MAPPINGS = window.SCRIPT_MAPPINGS || {};
 
 const rawOlChiki = {
     // === 1. VOWELS (स्वर - TYPING GUIDE KE LIYE) ===
-    // Yahan single letters ka actual pronunciation (phonetic name) likha hai
-    vowels: {
+       vowels: {
         'a':  { symbol: 'ᱚ', hindi: 'अ', english: 'a' },
         'aa': { symbol: 'ᱟ', hindi: 'आक्', english: 'aak' },
         'i':  { symbol: 'ᱤ', hindi: 'इ', english: 'i' },
+        'ii': { symbol: 'ᱤ', hindi: 'ई', english: 'ii' }, 
         'u':  { symbol: 'ᱩ', hindi: 'उ', english: 'u' },
+        'uu': { symbol: 'ᱩ', hindi: 'ऊ', english: 'uu' },
         'e':  { symbol: 'ᱮ', hindi: 'ए', english: 'e' },
-        'o':  { symbol: 'ᱳ', hindi: 'ओ', english: 'o' }
+        'ei': { symbol: 'ᱮ', hindi: 'ऐ', english: 'ei' },
+        'o':  { symbol: 'ᱳ', hindi: 'ओ', english: 'o' },
+        'ou': { symbol: 'ᱳ', hindi: 'औ', english: 'ou' } // Engine ab 'ou' ko ek sath padhega
     },
 
     // Ol Chiki mein dependent matras nahi hoti, isliye isko khali rakhein
     matras: {},
 
     // === 3. BASE CONSONANTS (व्यंजन - TYPING GUIDE KE LIYE) ===
-    // Yahan single letters ka phonetic meaning hai (jaise aaj, ih, ir)
-    baseConsonants: {
+        baseConsonants: {
         't': { symbol: 'ᱛ', hindi: 'अत्', english: 'at' },
         'g': { symbol: 'ᱜ', hindi: 'अग्', english: 'ag' },
         'M': { symbol: 'ᱝ', hindi: 'अग्', english: 'ang' },
@@ -56,7 +58,6 @@ const rawOlChiki = {
         
         
         
-        // Baaki bache hue characters ko bhi is list mein add kar sakte hain
     },
 
     // === 4. NUMBERS (संख्या) ===
@@ -106,7 +107,7 @@ const translationOverrides = {
     'M':  { symbol: 'ᱝ', hindi: 'ं' },
     'oH':  { symbol: 'ᱷ', hindi: 'ः' },
     
-    // Consonant Overrides (Taki 'j' dabane par 'अज्' ki jagah 'ज' type ho)
+    // Consonant Overrides 
     'k': { symbol: 'ᱠ', hindi: 'क' },
     'kh': { symbol: 'ᱠᱷ', hindi: 'ख' },
     'g': { symbol: 'ᱜ', hindi: 'ग' },
@@ -156,9 +157,76 @@ const translationOverrides = {
 };
 
 window.SCRIPT_MAPPINGS.olchiki = {
-    vowels: rawOlChiki.vowels,            // UI Guide me show hoga
+    vowels: rawOlChiki.vowels,            
     matras: rawOlChiki.matras,
-    baseConsonants: rawOlChiki.baseConsonants, // UI Guide me show hoga
-    consonants: translationOverrides,     // Translate engine me merge hokar purane values ko replace karega
+    baseConsonants: rawOlChiki.baseConsonants, 
+    consonants: translationOverrides,     
     numbers: rawOlChiki.numbers
 };
+
+// ==========================================
+// DYNAMIC MERGER FOR OL CHIKI TRANSLATION
+// ==========================================
+
+const hiddenMatras = {
+    'a':  { symbol: 'ᱚ', hindi: '' },    
+    'aa': { symbol: 'ᱟ', hindi: 'ा' },
+    'i':  { symbol: 'ᱤ', hindi: 'ि' },
+    'ii': { symbol: 'ᱤ', hindi: 'ी' },
+    'u':  { symbol: 'ᱩ', hindi: 'ु' },
+    'uu': { symbol: 'ᱩ', hindi: 'ू' },
+    'e':  { symbol: 'ᱮ', hindi: 'े' },
+    'ei': { symbol: 'ᱮ', hindi: 'ै' },
+    'o':  { symbol: 'ᱳ', hindi: 'ो' },
+    'ou': { symbol: 'ᱳ', hindi: 'ौ' },
+    'aM': { symbol: 'ᱝ', hindi: 'ं' },
+    'aH': { symbol: 'ᱷ', hindi: 'ः' },
+   
+    'AA': { symbol: 'ᱟ', hindi: 'ा' },
+    'I':  { symbol: 'ᱤ', hindi: 'ि' },
+    'II': { symbol: 'ᱤ', hindi: 'ी' },
+    'U':  { symbol: 'ᱩ', hindi: 'ु' },
+    'UU': { symbol: 'ᱩ', hindi: 'ू' },
+    'E':  { symbol: 'ᱮ', hindi: 'े' },
+    'EI': { symbol: 'ᱮ', hindi: 'ै' },
+    'O':  { symbol: 'ᱳ', hindi: 'ो' },
+    'OU': { symbol: 'ᱳ', hindi: 'ौ' },
+    'M':  { symbol: 'ᱝ', hindi: 'ं' },
+    'oH': { symbol: 'ᱷ', hindi: 'ः' }
+};
+
+const baseConsonantsForTranslation = {
+    'k': { symbol: 'ᱠ', hindi: 'क्' }, 'kh': { symbol: 'ᱠᱷ', hindi: 'ख्' }, 'g': { symbol: 'ᱜ', hindi: 'ग्' }, 'gh': { symbol: 'ᱜᱷ', hindi: 'घ्' },
+    'c': { symbol: 'ᱪ', hindi: 'च्' }, 'ch': { symbol: 'ᱪᱷ', hindi: 'छ्' }, 'j': { symbol: 'ᱡ', hindi: 'ज्' }, 'jh': { symbol: 'ᱡᱷ', hindi: 'झ्' }, 'ny': { symbol: 'ᱧ', hindi: 'ञ्' },
+    'T': { symbol: 'ᱴ', hindi: 'ट्' }, 'Th': { symbol: 'ᱴᱷ', hindi: 'ठ्' }, 'D': { symbol: 'ᱰ', hindi: 'ड्' }, 'Dh': { symbol: 'ᱰᱷ', hindi: 'ढ्' }, 'N': { symbol: 'ᱬ', hindi: 'ण्' },
+    't': { symbol: 'ᱛ', hindi: 'त्' }, 'th': { symbol: 'ᱛᱷ', hindi: 'थ्' }, 'd': { symbol: 'ᱫ', hindi: 'द्' }, 'dh': { symbol: 'ᱫᱷ', hindi: 'ध्' }, 'n': { symbol: 'ᱱ', hindi: 'न्' },
+    'p': { symbol: 'ᱯ', hindi: 'प्' }, 'ph': { symbol: 'ᱯᱷ', hindi: 'फ्' }, 'b': { symbol: 'ᱵ', hindi: 'ब्' }, 'bh': { symbol: 'ᱵᱷ', hindi: 'भ्' }, 'm': { symbol: 'ᱢ', hindi: 'म्' },
+    'y': { symbol: 'ᱭ', hindi: 'य्' }, 'r': { symbol: 'ᱨ', hindi: 'र्' }, 'l': { symbol: 'ᱞ', hindi: 'ल्' }, 'w': { symbol: 'ᱣ', hindi: 'व्' },
+    's': { symbol: 'ᱥ', hindi: 'स्' }, 'h': { symbol: 'ᱦ', hindi: 'ह्' }, 'R': { symbol: 'ᱲ', hindi: 'ड़्' }
+};
+
+
+const generatedOlChikiConsonants = {};
+
+for (let [consKey, consData] of Object.entries(baseConsonantsForTranslation)) {
+    
+    // 1. Standalone Consonant (halant hata kar normal Hindi letter, eg: 'ज्' -> 'ज')
+    let baseHindiClean = consData.hindi.replace('्', ''); 
+    
+    generatedOlChikiConsonants[consKey] = {
+        symbol: consData.symbol,
+        hindi: baseHindiClean, 
+        english: consKey
+    };
+
+    // 2. Consonant + Matras Combination
+    for (let [matraKey, matraData] of Object.entries(hiddenMatras)) {
+        let combinedKey = consKey + matraKey; 
+        
+        generatedOlChikiConsonants[combinedKey] = {
+            symbol: consData.symbol + matraData.symbol,
+            hindi: baseHindiClean + matraData.hindi,
+            english: combinedKey
+        };
+    }
+}
