@@ -16,10 +16,10 @@ const rawOlChiki = {
         'e':  { symbol: 'ᱮ', hindi: 'ए', english: 'e' },
         'ei': { symbol: 'ᱮ', hindi: 'ऐ', english: 'ei' },
         'o':  { symbol: 'ᱳ', hindi: 'ओ', english: 'o' },
-        'ou': { symbol: 'ᱳ', hindi: 'औ', english: 'ou' } // Engine ab 'ou' ko ek sath padhega
+        'ou': { symbol: 'ᱳ', hindi: 'औ', english: 'ou' } 
     },
 
-    // Ol Chiki mein dependent matras nahi hoti, isliye isko khali rakhein
+    
     matras: {},
 
     // === 3. BASE CONSONANTS (व्यंजन - TYPING GUIDE KE LIYE) ===
@@ -82,30 +82,30 @@ const rawOlChiki = {
 const translationOverrides = {
     // Vowel Overrides
     'a':  { symbol: 'ᱚ', hindi: 'अ' },
-    'aa': { symbol: 'ᱟ', hindi: 'आ' },
-    'i':  { symbol: 'ᱤ', hindi: 'इ' },
-    'ii':  { symbol: 'ᱤ', hindi: 'ई ' },
-    'u':  { symbol: 'ᱩ', hindi: 'उ' },
-    'uu':  { symbol: 'ᱩ', hindi: 'ऊ' },
-    'e':  { symbol: 'ᱮ', hindi: 'ए' },
-    'ei':  { symbol: 'ᱮ', hindi: 'ऐ ' },
-    'o':  { symbol: 'ᱳ', hindi: 'ओ' },
-    'ou':  { symbol: 'ᱳ', hindi: 'औ' },
-    'aM':  { symbol: 'ᱝ', hindi: 'अं' },
-    'ा H':  { symbol: 'ᱷ', hindi: 'अः' },
+    'AA': { symbol: 'ᱟ', hindi: 'आ' },
+    'I':  { symbol: 'ᱤ', hindi: 'इ' },
+    'II':  { symbol: 'ᱤ', hindi: 'ई ' },
+    'U':  { symbol: 'ᱩ', hindi: 'उ' },
+    'UU':  { symbol: 'ᱩ', hindi: 'ऊ' },
+    'E':  { symbol: 'ᱮ', hindi: 'ए' },
+    'EI':  { symbol: 'ᱮ', hindi: 'ऐ ' },
+    'O':  { symbol: 'ᱳ', hindi: 'ओ' },
+    'OU':  { symbol: 'ᱳ', hindi: 'औ' },
+    'AM':  { symbol: 'ᱝ', hindi: 'अं' },
+    'oH':  { symbol: 'ᱷ', hindi: 'अः' },
 
     'a':  { symbol: 'ᱚ', hindi: 'अ' },
-    'AA': { symbol: 'ᱟ', hindi: 'ा' },
-    'I':  { symbol: 'ᱤ', hindi: 'ि' },
-    'II':  { symbol: 'ᱤ', hindi: 'ी' },
-    'U':  { symbol: 'ᱩ', hindi: 'ु' },
-    'UU':  { symbol: 'ᱩ', hindi: 'ू' },
-    'E':  { symbol: 'ᱮ', hindi: 'े' },
-    'EI':  { symbol: 'ᱮ', hindi: 'ै' },
-    'O':  { symbol: 'ᱳ', hindi: 'ो' },
-    'OU':  { symbol: 'ᱳ', hindi: 'ौ' },
+    'aa': { symbol: 'ᱟ', hindi: 'ा' },
+    'i':  { symbol: 'ᱤ', hindi: 'ि' },
+    'ii':  { symbol: 'ᱤ', hindi: 'ी' },
+    'u':  { symbol: 'ᱩ', hindi: 'ु' },
+    'uu':  { symbol: 'ᱩ', hindi: 'ू' },
+    'e':  { symbol: 'ᱮ', hindi: 'े' },
+    'ei':  { symbol: 'ᱮ', hindi: 'ै' },
+    'o':  { symbol: 'ᱳ', hindi: 'ो' },
+    'ou':  { symbol: 'ᱳ', hindi: 'ौ' },
     'M':  { symbol: 'ᱝ', hindi: 'ं' },
-    'oH':  { symbol: 'ᱷ', hindi: 'ः' },
+    'H':  { symbol: 'ᱷ', hindi: 'ः' },
     
     // Consonant Overrides 
     'k': { symbol: 'ᱠ', hindi: 'क' },
