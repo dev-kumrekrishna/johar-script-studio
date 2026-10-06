@@ -4,7 +4,7 @@
    Offline + Cache + Auto Update
    ========================================= */
 
-const CACHE_NAME = "johar-script-studio-v8";
+const CACHE_NAME = "johar-script-studio-v9";
 
 // =========================================
 // IMPORTANT FILES
