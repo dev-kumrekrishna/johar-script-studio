@@ -470,165 +470,59 @@ if (copyBtn) {
 
 
 // ============================================================
-// DOWNLOAD TXT
+// DOWNLOAD FONTS
 // ============================================================
 
 if (downloadBtn) {
+    downloadBtn.addEventListener("click", () => {
+        // Agar pehle se menu open hai toh use remove karein
+        const oldMenu = document.getElementById("fontDownloadMenu");
+        if (oldMenu) oldMenu.remove();
 
-    downloadBtn.addEventListener(
-        "click",
-        () => {
+        const menu = document.createElement("div");
+        menu.id = "fontDownloadMenu";
+        menu.style.position = "fixed";
+        menu.style.zIndex = "99999";
+        menu.style.left = "50%";
+        menu.style.top = "50%";
+        menu.style.transform = "translate(-50%, -50%)";
+        menu.style.background = "#111";
+        menu.style.border = "1px solid #08fb8f";
+        menu.style.borderRadius = "18px";
+        menu.style.padding = "20px";
+        menu.style.width = "280px";
+        menu.style.boxShadow = "0 10px 40px rgba(0,0,0,.6)";
+        menu.style.textAlign = "center";
 
-            // Use the same reliable system as COPY
-            const finalGondiText =
-                window.getUIFinalGondiText();
+        menu.innerHTML = `
+            <div style="color:white; font-size:20px; font-weight:700; margin-bottom:16px;">
+                Download Fonts
+            </div>
 
+            <a href="fonts/MasaramGondi-Regular.ttf" download style="display:block; width:100%; padding:13px; margin-bottom:10px; border-radius:12px; background:#08fb8f; color:#000; font-weight:700; font-size:16px; text-decoration:none; box-sizing:border-box;">
+                Masaram Gondi
+            </a>
 
-            // ================================================
-            // NOTHING TO DOWNLOAD
-            // ================================================
+            <a href="fonts/GunjalaGondi-Regular.ttf" download style="display:block; width:100%; padding:13px; margin-bottom:10px; border-radius:12px; background:#08fb8f; color:#000; font-weight:700; font-size:16px; text-decoration:none; box-sizing:border-box;">
+                Gunjala Gondi
+            </a>
+            
+            <a href="fonts/NotoSansOlChiki-Regular.ttf" download style="display:block; width:100%; padding:13px; margin-bottom:10px; border-radius:12px; background:#08fb8f; color:#000; font-weight:700; font-size:16px; text-decoration:none; box-sizing:border-box;">
+                Ol Chiki
+            </a>
 
-            if (
-                !finalGondiText ||
-                !finalGondiText.trim()
-            ) {
+            <button id="closeFontMenu" style="width:100%; padding:10px; border:1px solid #555; border-radius:12px; background:#222; color:#aaa; font-weight:600; cursor:pointer; margin-top:10px;">
+                Cancel
+            </button>
+        `;
 
-                alert(
-                    "Write something to download!"
-                );
+        document.body.appendChild(menu);
 
-                return;
-            }
-
-
-            // ================================================
-            // FILE CONTENT
-            // ================================================
-
-            let fileContent =
-                finalGondiText;
-
-
-            // RTL support
-            if (
-                window.currentDirection ===
-                "rtl"
-            ) {
-
-                if (
-                    !fileContent.startsWith(
-                        "\u202E"
-                    )
-                ) {
-
-                    fileContent =
-                        "\u202E" +
-                        fileContent;
-
-                }
-
-            }
-
-
-            // ================================================
-            // CREATE TXT FILE
-            // ================================================
-
-            const blob =
-                new Blob(
-                    [
-                        fileContent
-                    ],
-                    {
-                        type:
-                            "text/plain;charset=utf-8"
-                    }
-                );
-
-
-            const url =
-                URL.createObjectURL(
-                    blob
-                );
-
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.href =
-                url;
-
-
-            // ================================================
-            // FILE NAME
-            // ================================================
-
-            let scriptName =
-                "Script";
-
-
-            if (
-                scriptSelect &&
-                scriptSelect.selectedIndex >= 0
-            ) {
-
-                scriptName =
-                    scriptSelect
-                        .options[
-                            scriptSelect.selectedIndex
-                        ]
-                        .text;
-
-            }
-
-
-            scriptName =
-                scriptName
-                    .replace(
-                        /[^\w\u0900-\u097F-]+/g,
-                        "_"
-                    )
-                    .replace(
-                        /^_+|_+$/g,
-                        ""
-                    );
-
-
-            link.download =
-                `JoharStudio_${scriptName || "Script"}.txt`;
-
-
-            // ================================================
-            // DOWNLOAD
-            // ================================================
-
-            document.body.appendChild(
-                link
-            );
-
-
-            link.click();
-
-
-            document.body.removeChild(
-                link
-            );
-
-
-            // Give browser time to start download
-            setTimeout(
-                () => {
-                    URL.revokeObjectURL(url);
-                },
-                1000
-            );
-
-        }
-    );
-
+        // Cancel button ka event listener
+        document.getElementById("closeFontMenu").addEventListener("click", () => {
+            menu.remove();
+        });
+    });
 }
 
 

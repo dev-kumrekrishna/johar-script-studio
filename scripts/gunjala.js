@@ -1,7 +1,7 @@
 // ===========================
 // scripts/gunjala.js
 // ===========================
-
+window.SCRIPT_ENGINES = window.SCRIPT_ENGINES || {};
 window.SCRIPT_MAPPINGS = window.SCRIPT_MAPPINGS || {};
 
 const rawGunjala = {
@@ -142,3 +142,85 @@ window.SCRIPT_MAPPINGS.gunjala = {
 
     numbers: rawGunjala.numbers
 };
+
+class GunjalaEngine {
+    constructor() {
+        this.flatMap = this.buildFlatMap();
+        this.reverseMap = this.buildReverseMap();
+        this.reverseSymbols = Object.keys(this.reverseMap).sort((a, b) => b.length - a.length);
+    }
+
+    buildFlatMap() {
+        let map = {};
+        const orderedCategories = ['matras', 'vowels', 'consonants', 'numbers'];
+        for (let category of orderedCategories) {
+            if (window.SCRIPT_MAPPINGS.gunjala[category]) {
+                for (let key in window.SCRIPT_MAPPINGS.gunjala[category]) {
+                    const item = window.SCRIPT_MAPPINGS.gunjala[category][key];
+                    if (typeof item === 'object') map[key] = { char: item.symbol, hindi: item.hindi || '' };
+                }
+            }
+        }
+        return map;
+    }
+
+    buildReverseMap() {
+        const reverse = {};
+        for (const key in this.flatMap) {
+            const item = this.flatMap[key];
+            if (item && item.char) reverse[item.char] = { hindi: item.hindi || "" };
+        }
+        return reverse;
+    }
+
+    translate(text) {
+        let tokens = [];
+        let currentGondiWord = "";
+        let currentHindiWord = "";
+        let i = 0;
+        const gunjalaVirama = '𑶗';
+
+        const flushWord = (removeFinalHalant = false) => {
+            if (currentGondiWord.length === 0) return;
+            let finalGondi = currentGondiWord;
+            let finalHindi = currentHindiWord;
+
+            if (removeFinalHalant) {
+                if (finalGondi.endsWith(gunjalaVirama)) finalGondi = finalGondi.slice(0, -gunjalaVirama.length);
+                if (finalHindi.endsWith('्')) finalHindi = finalHindi.slice(0, -1);
+            }
+
+            tokens.push({ type: 'word', gondi: finalGondi, hindi: finalHindi });
+            currentGondiWord = ""; currentHindiWord = "";
+        };
+
+        while (i < text.length) {
+            if (text[i] === " ") { flushWord(true); tokens.push({ type: 'space', gondi: " ", hindi: " " }); i++; continue; }
+            if (text[i] === "\n") { flushWord(true); tokens.push({ type: 'newline', gondi: "\n", hindi: "\n" }); i++; continue; }
+
+            let reverseMatch = this.reverseSymbols.find(sym => text.startsWith(sym, i));
+            if (reverseMatch) {
+                currentGondiWord += reverseMatch;
+                currentHindiWord += this.reverseMap[reverseMatch].hindi;
+                i += reverseMatch.length;
+                continue;
+            }
+
+            let matchFound = false;
+            for (let len = 4; len >= 1; len--) {
+                if (i + len <= text.length) {
+                    const chunk = text.substring(i, i + len);
+                    if (this.flatMap[chunk]) {
+                        currentGondiWord += this.flatMap[chunk].char;
+                        currentHindiWord += this.flatMap[chunk].hindi;
+                        i += len; matchFound = true; break;
+                    }
+                }
+            }
+            if (!matchFound) { currentGondiWord += text[i]; currentHindiWord += text[i]; i++; }
+        }
+        flushWord(true);
+        return tokens;
+    }
+}
+window.SCRIPT_ENGINES.gunjala = new GunjalaEngine();
